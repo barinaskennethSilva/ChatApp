@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "appchat",
+    "slug": "appchat",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/20230416_104840_0000.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+      "packagerOpts": {
+      "sourceExts": ["jsx", "js", "ts", "tsx", "json"],
+      "nodeModulesPath": "../node_modules"
+    },
+    "useDevServer": true,
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.Kenneth31.appchat",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "becd55e9-cbbb-4c8a-980c-b77d2e0b4dbf"
+      }
+    }
+  }
+}
