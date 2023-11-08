@@ -16,46 +16,67 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default class Login extends Component {
   
- constructor(props) {
-  super(props);
-  this.state = {
-    email: '',
-    password: '',
-    msgError: '',
-  };
-}
+ constructor(props){
+		super(props);
+		this.state={
+			userEmail:'',
+			userPassword:''
+		}
+	}
+	
+	 login = () =>{
+	   this.props.navigation.navigate("Home");
+	/*	const {userEmail,userPassword} = this.state;
+		let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+		if(userEmail==""){
+			//alert("Please enter Email address");
+		  this.setState({email:'Please enter Email address'})
+			
+		}
+		
+		else if(reg.test(userEmail) === false)
+		{
+		//alert("Email is Not Correct");
+		this.setState({email:'Email is Not Correct'})
+		return false;
+		  }
 
-
-handleSubmit = () => {
-  const { email, password } = this.state;
-  let msgError = '';
-
-  // Validate email
-  if (!email && !password) {
-    msgError = 'Email and Password is required';
-  }
-    else if (!email){
-      msgError = 'Email is required'
- }    else if (!/\S+@\S+\.\S+/.test(email)) {
-    msgError = 'Email is invalid';
-  }
-
-  // Validate password
- else if (!password) {
-    msgError = 'Password is required';
-  } else if (password.length < 6) {
-    msgError = 'Password must be at least 6 characters';
-  }
-
-  if (msgError) {
-    this.setState({ msgError});
-  } else {
-    this.props.navigation.navigate("Home");
-  }
-}
-
-
-				 
+		else if(userPassword==""){
+		this.setState({email:'Please enter password'})
+		}
+		else{
+		
+		fetch('http://maritesapp.epizy.com/login.php',{
+			method:'post',
+			header:{
+				'Accept': 'application/json',
+				'Content-type': 'application/json'
+			},
+			body:JSON.stringify({
+				// we will pass our input data to server
+				email: userEmail,
+				password: userPassword
+			})
+			
+		})
+		.then((response) => response.json())
+		 .then((responseJson)=>{
+			 if(responseJson == "ok"){
+				 // redirect to profile page
+				 alert("Successfully Login");
+				 this.props.navigation.navigate("Home");
+			 }else{
+				 alert("Wrong Login Details");
+			 }
+		 })
+		 .catch((error)=>{
+		 console.error(error);
+		 });
+		}
+		
+		
+		Keyboard.dismiss();*/
+	}
   LogIn = ()=>{
   this.props.navigation.navigate("SignUpSreen");
 }
@@ -73,8 +94,7 @@ handleSubmit = () => {
         placeholder="Email"
         placeholderTextColor="#9a73ef"
         autoCapitalize="none"
-          value={this.state.email}
-        onChangeText={email => this.setState({ email })}
+        onChangeText={userEmail => this.setState({userEmail})}
       />
       </View>  
          <View style={styles.input}>
@@ -86,17 +106,12 @@ handleSubmit = () => {
         placeholderTextColor="#9a73ef"
         autoCapitalize="none"
         secureTextEntry={true}
-      value={this.state.password}
-        onChangeText={password => this.setState({ password })}
+    onChangeText={userPassword => this.setState({userPassword})}
       />
        </View>  
-
-  <View style={styles.errorMsg}>   
-   {this.state.msgError ? <Text style={{color:'red',fontSize:18}}>{this.state.msgError}</Text> : null}
-               </View>  
       <TouchableOpacity
-        onPress={this.handleSubmit}
-        style={styles.submitButton}>
+        style={styles.submitButton}
+        onPress={this.login}>
         <Text style={styles.submitButtonText}> Login </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -142,11 +157,6 @@ const styles = StyleSheet.create({
   marginLeft:5,
   fontSize:20,
   marginTop:5,
-},
-errorMsg:{
-  width:280,
-  fontSize:21,
-  marginLeft:15
 },
   submitButton: {
     backgroundColor: '#7a42f4',

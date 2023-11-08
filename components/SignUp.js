@@ -1,158 +1,129 @@
-import React, {Component,useState} from 'react';
-/*import AsyncStorage from '@react-native-async-storage/async-storage';*/
+import { useNavigation } from '@react-navigation/core';
+import React, { useEffect, useState } from 'react';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { createUserWithEmailAndPassword} from 'firebase/auth';
+import { auth } from '.././firebase';
 
-import {
-  View,
-  Text,AppRegistry,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,Image,
-} from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import axios from 'axios';
-export default class SignUpSreen extends Component{
-  constructor(props){
-		super(props)
-		this.state={
-			name:'',
-			email:'', 
-			password:''				
-		}
-	}
-	
-	userRegister = () =>{
-var name = this.state.name;
-	var email = this.state.email;
-  var password = this.state.password;
-	
-	const checkPasswordValidity = value => {
-    const isNonWhiteSpace = /^\S*$/;
-    if (!isNonWhiteSpace.test(value)) {
-      return 'Password must not contain Whitespaces.';
-    }
-	}
-	
- if (!name) {
-  alert("Name Field required to Fill");
-} 
-else if (!email){
-alert("Email Field required to Fill");
-}
-else if (!password){
-alert("Password Field required to Fill");
-}
+const SignUpScreen = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-else{
-this.props.navigation.navigate("Home");
-}
-}
-  LogIn = () =>{
-this.props.navigation.navigate("login");
+  const navigation = useNavigation()
+
+ /* useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        navigation.replace("Home")
+      }
+    })
+
+    return unsubscribe
+  }, [])*/
+
+  const handleSignUp = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user;
+        console.log('Registered with:', user.email);
+      })
+      .catch(error => alert(error.message))
   }
-  render(){
-    return (
-      <View style={styles.container}>
- <Image source={require('./images/bg2.png')} style={styles.bg}/>
-        <View style={styles.form}> 
-    <View style={styles.input}>
-     <AntDesign name="user" size={34} color="#9a73ef"style={{marginTop:5,marginLeft:5,}}/>  
-       <TextInput
-          style={styles.inputStyle}
-          underlineColorAndroid="transparent"
-          placeholder="Name"
-          placeholderTextColor="#9a73ef"
-          autoCapitalize="none"
-          onChangeText= {name => this.setState({name})}
-          
-        />
-        </View>
-    <View style={styles.input}>
-     <AntDesign name="mail" size={34} color="#9a73ef"style={{marginTop:5,marginLeft:5,}}/>       
+
+  const handleLogin = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user;
+        console.log('Logged in with:', user.email);
+      })
+      .catch(error => alert(error.message))
+  }
+
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+    >
+      <View style={styles.inputContainer}>
         <TextInput
-          style={styles.inputStyle}
-          underlineColorAndroid="transparent"
           placeholder="Email"
-          placeholderTextColor="#9a73ef"
-          autoCapitalize="none"
-          onChangeText= {email => this.setState({email})}
-          
+          value={email}
+          onChangeText={text => setEmail(text)}
+          style={styles.input}
         />
-</View>
-  <View style={styles.input}>
-     <AntDesign name="lock" size={34} color="#9a73ef"style={{marginTop:5,marginLeft:5,}}/> 
         <TextInput
-          style={styles.inputStyle}
-          underlineColorAndroid="transparent"
           placeholder="Password"
-          placeholderTextColor="#9a73ef"
-          autoCapitalize="none"
-secureTextEntry={true}
-          onChangeText= {password => this.setState({password})} />
-</View>
+          value={password}
+          onChangeText={text => setPassword(text)}
+          style={styles.input}
+          secureTextEntry
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.submitButton}
-          onPress={this.userRegister}>
-          <Text style={styles.submitButtonText}> Register </Text>
+          onPress={handleLogin}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        
-         <TouchableOpacity
-          style={styles.submitButton}
-          onPress={this.LogIn}>
-          <Text style={styles.submitButtonText}> Login Account </Text>
+        <TouchableOpacity
+          onPress={handleSignUp}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
       </View>
-      </View>
-    );
-  }
+    </KeyboardAvoidingView>
+  )
 }
 
+export default SignUpScreen
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 23,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-bg:{
-    alignSelf: 'stretch',
-    width: '100%',
-    height:750,
-    position:'absolute',
-    left:0,
-    top:0,
+  inputContainer: {
+    width: '80%'
   },
-form:{
-    position:'absolute',
-    left:0,
-    top:200,
-    width: '100%',
-  },
-  inputStyle: {
-  flex: 1,
-  height: 35,
-  marginLeft:5,
-  fontSize:20,
-  marginTop:5,
-},
   input: {
-    margin: 15,
-    borderColor: '#7a42f4',
-    borderWidth: 1,
-    borderRadius:5,
-    paddingBottom:10 ,
-    flexDirection:'row',
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 5,
   },
-  submitButton: {
-  backgroundColor: '#7a42f4',
-    padding: 10,
-    margin: 15,
-    height: 50,
+  buttonContainer: {
+    width: '60%',
+    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius:20,
-  
+    marginTop: 40,
   },
-  submitButtonText: {
+  button: {
+    backgroundColor: '#0782F9',
+    width: '100%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonOutline: {
+    backgroundColor: 'white',
+    marginTop: 5,
+    borderColor: '#0782F9',
+    borderWidth: 2,
+  },
+  buttonText: {
     color: 'white',
-    alignItems: 'center',
-      fontSize:20,
-    fontWeight: 'bold',
+    fontWeight: '700',
+    fontSize: 16,
   },
-});
+  buttonOutlineText: {
+    color: '#0782F9',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+})

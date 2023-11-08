@@ -1,56 +1,81 @@
 import * as React from 'react';
-import { View, StyleSheet,Image, TouchableOpacity,Text } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
+	import { Button, View , StatusBar, Image,TouchableOpacity,Text,ScrollView,StyleSheet,SafeAreaView} from 'react-native';
+	import { NavigationContainer } from '@react-navigation/native';
+	import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Ionicons from 'react-native-vector-icons/AntDesign';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AddsVideo from './AddsVideo.js';
+import { useNavigation } from '@react-navigation/native';
 
-export default function App() {
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
-  return (
-    <View style={styles.container}>
-      <Video
-        ref={video}
-        style={styles.video}
-        source={
-          require('./AddsVideo/video1.mp4') }
-        useNativeControls
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
-      />
-      <TouchableOpacity style={styles.buttons} onPress={() =>
-            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-          }>
-<Image source={require('./AddsImg/2_20230401_222751_0001.png')}style={{width: '100%',height:200,borderRadius:10}}/>
- <View style={styles.infoAdds}>
-<Text style={{color:'#fff',fontWeight:'700',fontSize:20,textAlign:'center'}}>Appchat</Text>
-<Text style={{color:'#fff',fontSize:18}}>Click to Show more Info</Text>
+	function Adds() {
+	  const navigation = useNavigation();
+  OpenAdds = (navigation) => {
+    navigation.navigate("AddsVideo");
+}
+	 SearchNav = (navigation) =>{
+	   navigation.navigate("SearchBar");
+	 }
+	  return (
+	    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+	    
+<SafeAreaView style={styles.container}>
+  
+  <ScrollView style={styles.scrollView}>
+<TouchableOpacity style={styles.buttons}onPress={() => this.OpenAdds(navigation)}>
+ <Image source={require('./AddsImg/2_20230401_222751_0001.png')}style={{ width: '100%', height: '100%',borderRadius:10}}  /> 
+<View style={styles.infoAdds}>
+   <Text style={{color:'#fff',textAlign:'center',fontWeight:'700',fontSize:40}}>Appchat</Text>
+  <Text style={{color:'#fff',textAlign:'center'}}>Click for more Details</Text>
 </View>
-      </TouchableOpacity>
-    </View>
-  );
+</TouchableOpacity>
+
+</ScrollView>
+</SafeAreaView>
+  </View>
+   );
 }
 
-const styles = StyleSheet.create({
+	const Stack = createNativeStackNavigator();
+
+	function App() {
+	  return (
+	    <NavigationContainer independent={true}>
+	      <Stack.Navigator screenOptions={{
+       headerTintColor:'#fff',
+        headerShown: false,
+        headerStyle: {
+          backgroundColor: '#111',
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerTitle: '',
+      }}>
+	        <Stack.Screen name="Adds" component={Adds} />
+	      <Stack.Screen name="AddsVideo" component={AddsVideo} />
+	      </Stack.Navigator>
+	    </NavigationContainer>
+	  );
+	}
+
+	export default App;
+	const styles = StyleSheet.create({
+scrollView: {
+    backgroundColor: '#000',
+    width:360,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#ecf0f1',
   },
-  video: {
-    alignSelf: 'center',
-    width: 320,
-    height: 200,
-    marginTop:80
-  },
+  
   buttons: {
     borderWidth:1,
-    borderColor:'#111',
+    borderColor:'green',
     borderRadius:10,
     width:'95%',
-    position:'absolute',
-    left:10,
-    top:50,
-    height:202
+    height:202,
+    marginLeft:10
   },
   infoAdds:{
     position:'relative',
@@ -58,4 +83,4 @@ const styles = StyleSheet.create({
     left:60,
     width:220
   }
-});
+	});

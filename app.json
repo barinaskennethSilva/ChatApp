@@ -11,8 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-      "packagerOpts": {
-      "sourceExts": ["jsx", "js", "ts", "tsx", "json"],
+    "packagerOpts": {
+      "sourceExts": [
+        "jsx",
+        "js",
+        "ts",
+        "tsx",
+        "json"
+      ],
       "nodeModulesPath": "../node_modules"
     },
     "useDevServer": true,
@@ -20,7 +26,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.Kenneth31.appchat"
     },
     "android": {
       "package": "com.Kenneth31.appchat",

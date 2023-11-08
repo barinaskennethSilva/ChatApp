@@ -5,6 +5,7 @@ import * as React from 'react';
 import Ionicons from 'react-native-vector-icons/AntDesign';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ChatScreen from './Chat.js';
+import SearchBar from './SearchBar.js';
 import { useNavigation } from '@react-navigation/native';
 
 	function FriendList() {
@@ -12,14 +13,16 @@ import { useNavigation } from '@react-navigation/native';
   OpenChat = (navigation) => {
     navigation.navigate("ChatScreen");
 }
-	 
+	 SearchNav = (navigation) =>{
+	   navigation.navigate("SearchBar");
+	 }
 	  return (
 	    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
 	    
 <SafeAreaView style={styles.container}>
     <View style={{backgroundColor:'#000',borderWidth:1,borderTopColor:'#fff',flexDirection:'row',padding:13,height:60}}>
  <Text style={{color:'#fff',fontSize:20,fontWeight:'700'}}> Messages </Text>
- <TouchableOpacity style={styles.search}>
+ <TouchableOpacity style={styles.search}onPress={() => this.SearchNav(navigation)}>
   <Ionicons name="search1" style={{fontSize:18,fontWeight:'700',color:'#fff'}}/>
 </TouchableOpacity>
  </View>
@@ -114,6 +117,7 @@ import { useNavigation } from '@react-navigation/native';
       }}>
 	        <Stack.Screen name="FriendList" component={FriendList} />
 	      <Stack.Screen name="ChatScreen" component={ChatScreen} />
+	      <Stack.Screen name="SearchBar" component={SearchBar} />
 	      </Stack.Navigator>
 	    </NavigationContainer>
 	  );

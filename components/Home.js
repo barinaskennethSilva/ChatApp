@@ -16,7 +16,7 @@ function GroupComm(){
 
 const Drawer = createDrawerNavigator();
 const CustomDrawer = (props) =>{
-  return(
+return(
 <View style={{flex:1,backgroundColor:'#000',borderWidth:1,borderLeftColor:'#11'}}>
 <DrawerContentScrollView {...props}>
 <View style={{ flexDirection: 'row',
@@ -53,7 +53,8 @@ const CustomDrawer = (props) =>{
 </View>
 );
 };
-const DrawerNavigator = () =>  {
+
+const DrawerNavigator = (props) =>{
 return (
 <Drawer.Navigator screenOptions={{
        headerTintColor:'#fff',
@@ -90,7 +91,8 @@ drawerActiveTintColor:"#fff",
                  color={focused ? '#fff' : '#fff'}
               />
            ),
-        }}/>
+        }}
+              />
 <Drawer.Screen component ={GroupComm} name='Group Communities'options={{
 drawerActiveTintColor:"#fff",
     drawerInactiveTintColor:"#fff",
